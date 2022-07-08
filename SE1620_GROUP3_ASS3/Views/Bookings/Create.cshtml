@@ -1,0 +1,37 @@
+﻿@model IEnumerable<SE1620_GROUP3_ASS3.Models.Booking>
+    @inject IHttpContextAccessor HttpContextAccessor;
+    @using Microsoft.AspNetCore.Http;
+    @{
+        ViewData["Title"] = "Index";
+    }
+
+    <h1>Index</h1>
+
+    <h5>Seats status</h5>
+    @{
+        bool[] arr = ViewBag.seatsStatus;
+        for (var n = 0; n < 10; n++)
+        {
+            //int n = 0;
+            for (var m = 0; m < 10; m++)
+            {
+                int index = n * 10 + m;
+                @if (arr[index] == true)
+                {
+                    <input name="@index" type="checkbox" checked onclick="return false;" />
+                }
+                else
+                {
+                    <input type="checkbox" />
+                }
+
+            }
+            <br />
+        }
+    }
+
+
+
+
+
+
