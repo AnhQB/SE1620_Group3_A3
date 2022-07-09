@@ -5,33 +5,62 @@
         ViewData["Title"] = "Index";
     }
 
-    <h1>Index</h1>
+    <h1>Create</h1>
 
-    <h5>Seats status</h5>
-    @{
-        bool[] arr = ViewBag.seatsStatus;
-        for (var n = 0; n < 10; n++)
-        {
-            //int n = 0;
-            for (var m = 0; m < 10; m++)
+    <h5>Booking</h5>
+    <form method="post">
+        <input type="hidden" name="showid" value="@ViewBag.showid" />
+        @{
+            bool[] arr = ViewBag.seatsStatus;
+            for (var n = 0; n < 10; n++)
             {
-                int index = n * 10 + m;
-                @if (arr[index] == true)
+                //int n = 0;
+                for (var m = 0; m < 10; m++)
                 {
-                    <input name="@index" type="checkbox" checked onclick="return false;" />
-                }
-                else
-                {
-                    <input type="checkbox" />
-                }
+                    int index = n * 10 + m;
+                    @if (arr[index] == true)
+                    {
+                        <input name="@index" type="checkbox" checked onclick="return false;" />
+                    }
+                    else
+                    {
+                        <input name="@index" type="checkbox" onclick="increaseAmount(this)" />
+                    }
 
+                }
+                <br />
             }
-            <br />
         }
-    }
+        Name <br>
+        <input type="text" name="name" />
+        <br>
+        Amount <br>
+        <input style="background-color: aquamarine" id="amountAuto" type="text" name="amount" value="0" readonly />
+        <br>
+        <button class="btn btn-primary">Create</button>
+    </form>
+    <a href="@Url.Action("Index","Bookings", new { ViewBag.showid})" >Back to List</a>
 
+    <script>
 
+        const boolArray = [];
+        function increaseAmount(i) {
+            let amountAuto = document.getElementById("amountAuto").value;
+            console.log(i.checked);
 
+            if (i.checked) {
+                amountAuto = parseInt(amountAuto) + 10;
+            } else {
+                if (amountAuto > 0 && boolArray[i.name] == true) {
+                    amountAuto = parseInt(amountAuto) - 10;
+                }
+            }
+            boolArray[i.name] = i.checked;
+            
+            //console.log(amountAuto);
+            document.getElementById("amountAuto").setAttribute('value', amountAuto);
+        }
+    </script>
 
 
 

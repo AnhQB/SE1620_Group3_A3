@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\ki_5_2022,may\\PRN211\\SE1620_GROUP3_ASS3\\SE1620_GROUP3_ASS3\\SE1620_GROUP3_ASS3.csproj": {}
+    "D:\\ki_5_2022,may\\PRN211\\Learn\\SE1620_Group3_A3\\SE1620_GROUP3_ASS3\\SE1620_GROUP3_ASS3.csproj": {}
   },
   "projects": {
-    "D:\\ki_5_2022,may\\PRN211\\SE1620_GROUP3_ASS3\\SE1620_GROUP3_ASS3\\SE1620_GROUP3_ASS3.csproj": {
+    "D:\\ki_5_2022,may\\PRN211\\Learn\\SE1620_Group3_A3\\SE1620_GROUP3_ASS3\\SE1620_GROUP3_ASS3.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\ki_5_2022,may\\PRN211\\SE1620_GROUP3_ASS3\\SE1620_GROUP3_ASS3\\SE1620_GROUP3_ASS3.csproj",
+        "projectUniqueName": "D:\\ki_5_2022,may\\PRN211\\Learn\\SE1620_Group3_A3\\SE1620_GROUP3_ASS3\\SE1620_GROUP3_ASS3.csproj",
         "projectName": "SE1620_GROUP3_ASS3",
-        "projectPath": "D:\\ki_5_2022,may\\PRN211\\SE1620_GROUP3_ASS3\\SE1620_GROUP3_ASS3\\SE1620_GROUP3_ASS3.csproj",
+        "projectPath": "D:\\ki_5_2022,may\\PRN211\\Learn\\SE1620_Group3_A3\\SE1620_GROUP3_ASS3\\SE1620_GROUP3_ASS3.csproj",
         "packagesPath": "C:\\Users\\LAPTOP VINH HA\\.nuget\\packages\\",
-        "outputPath": "D:\\ki_5_2022,may\\PRN211\\SE1620_GROUP3_ASS3\\SE1620_GROUP3_ASS3\\obj\\",
+        "outputPath": "D:\\ki_5_2022,may\\PRN211\\Learn\\SE1620_Group3_A3\\SE1620_GROUP3_ASS3\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\LAPTOP VINH HA\\AppData\\Roaming\\NuGet\\NuGet.Config",

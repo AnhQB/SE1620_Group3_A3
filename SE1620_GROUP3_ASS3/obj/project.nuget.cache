@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8wRfLh8OReE/L3Zet9fsYb9MY5GRP/xaoPylnCFcwBRepFeaKesemmBQXwfyQCZf62ZbmplHT4utysSa693D5w==",
+  "dgSpecHash": "Y1OXXr6xfsA85SFSAhSsub4PluYUvnPWFCHNsxAklE+ftc8d6z9Znr9xJlQiJgaRY63RyZE5twnawYBKcVZe3w==",
   "success": true,
-  "projectFilePath": "D:\\ki_5_2022,may\\PRN211\\SE1620_GROUP3_ASS3\\SE1620_GROUP3_ASS3\\SE1620_GROUP3_ASS3.csproj",
+  "projectFilePath": "D:\\ki_5_2022,may\\PRN211\\Learn\\SE1620_Group3_A3\\SE1620_GROUP3_ASS3\\SE1620_GROUP3_ASS3.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\LAPTOP VINH HA\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\LAPTOP VINH HA\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",

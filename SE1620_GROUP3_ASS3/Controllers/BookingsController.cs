@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,8 +13,6 @@ namespace SE1620_GROUP3_ASS3.Controllers
     public class BookingsController : Controller
     {
         private readonly CinemaContext _context;
-
-        
 
         public BookingsController(CinemaContext context)
         {
@@ -81,6 +80,7 @@ namespace SE1620_GROUP3_ASS3.Controllers
         {
             bool[] arr = getSeatStatus(id);
             ViewData["seatsStatus"] = arr;
+            ViewData["showid"] = id;
             return View();
         }
 
@@ -89,16 +89,51 @@ namespace SE1620_GROUP3_ASS3.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BookingId,ShowId,Name,SeatStatus,Amount")] Booking booking)
+        public async Task<IActionResult> CreateAsync()
         {
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
+            //{
+            //    _context.Add(booking);
+            //    await _context.SaveChangesAsync();
+            //    return RedirectToAction(nameof(Index));
+            //}
+            //ViewData["ShowId"] = new SelectList(_context.Shows, "ShowId", "ShowId", booking.ShowId);
+            //return View(booking);
+            string name = Request.Form["name"];
+            string amount = Request.Form["amount"];
+            int showid = Int32.Parse(Request.Form["showid"]);
+            bool[] arr = new bool[100];
+            for (var i = 0; i < 100; i++)
             {
-                _context.Add(booking);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (Request.Form[i + ""].ToString() == null || Request.Form[i + ""].ToString() == "")
+                {
+                    arr[i] = false;
+                }
+                else
+                {
+                    arr[i] = true;
+                }
+                
             }
-            ViewData["ShowId"] = new SelectList(_context.Shows, "ShowId", "ShowId", booking.ShowId);
-            return View(booking);
+            bool[] arrSeated = getSeatStatus(showid);
+            String seatStatus = "";
+            for(var i = 0; i<100; i++)
+            {
+                if(arrSeated[i] == true)
+                {
+                    arr[i] = false;
+                }
+                seatStatus += Convert.ToInt32(arr[i]);
+            }
+
+            Booking b = new Booking();
+            b.ShowId = showid;
+            b.Name = name;
+            b.SeatStatus = seatStatus;
+            b.Amount = Convert.ToDecimal(amount);
+            _context.Add(b);
+            _ = await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Bookings/Edit/5
@@ -114,8 +149,33 @@ namespace SE1620_GROUP3_ASS3.Controllers
             {
                 return NotFound();
             }
-            ViewData["ShowId"] = new SelectList(_context.Shows, "ShowId", "ShowId", booking.ShowId);
-            return View(booking);
+
+            bool[] arr = getSeatStatusByBookingID(booking.BookingId);
+            ViewData["seatsStatus"] = arr;
+            ViewData["booking"] = booking;
+            return View();
+        }
+
+        public bool[] getSeatStatusByBookingID(int id)
+        {
+            var cinemaContext = _context.Bookings.Include(b => b.Show).Where(b => b.BookingId == id);
+            bool[] arr = new bool[100];
+            foreach (Booking b in cinemaContext)
+            {
+                String seatStatus = b.SeatStatus;
+                for (var i = 0; i < 100; i++)
+                {
+                    if (seatStatus[i] == '1' && arr[i] == false)
+                    {
+                        arr[i] = true;
+                        continue;
+                    }
+                    if (arr[i] == true) continue;
+                    arr[i] = false;
+                }
+            }
+            //ViewData["seatsStatus"] = arr;
+            return arr;
         }
 
         // POST: Bookings/Edit/5
@@ -123,35 +183,46 @@ namespace SE1620_GROUP3_ASS3.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BookingId,ShowId,Name,SeatStatus,Amount")] Booking booking)
+        public async Task<IActionResult> Edit()
         {
-            if (id != booking.BookingId)
+            string name = Request.Form["name"];
+            string amount = Request.Form["amount"];
+            int showid = Int32.Parse(Request.Form["showid"]);
+            int bookingid = Int32.Parse(Request.Form["bookingid"]);
+            bool[] arr = new bool[100];
+            for (var i = 0; i < 100; i++)
             {
-                return NotFound();
+                if (Request.Form[i + ""].ToString() == null || Request.Form[i + ""].ToString() == "")
+                {
+                    arr[i] = false;
+                }
+                else
+                {
+                    arr[i] = true;
+                }
+
+            }
+            bool[] arrSeated = getSeatStatus(showid);
+            String seatStatus = "";
+            for (var i = 0; i < 100; i++)
+            {
+                if (arrSeated[i] == true)
+                {
+                    arr[i] = false;
+                }
+                seatStatus += Convert.ToInt32(arr[i]);
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(booking);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BookingExists(booking.BookingId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["ShowId"] = new SelectList(_context.Shows, "ShowId", "ShowId", booking.ShowId);
-            return View(booking);
+            Booking b = new Booking();
+            b.BookingId = bookingid;
+            b.ShowId = showid;
+            b.Name = name;
+            b.SeatStatus = seatStatus;
+            b.Amount = Convert.ToDecimal(amount);
+            var booking = (Booking)_context.Bookings.Where(b=>b.BookingId == bookingid);
+            booking = b ;
+            _ = await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Bookings/Delete/5

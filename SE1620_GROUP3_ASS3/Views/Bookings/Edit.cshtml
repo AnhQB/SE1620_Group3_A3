@@ -1,49 +1,68 @@
-﻿@model SE1620_GROUP3_ASS3.Models.Booking
+﻿@model IEnumerable<SE1620_GROUP3_ASS3.Models.Booking>
+    @inject IHttpContextAccessor HttpContextAccessor;
+    @using Microsoft.AspNetCore.Http;
+    @{
+        ViewData["Title"] = "Edit";
+    }
 
-@{
-    ViewData["Title"] = "Edit";
-}
+    <h1>Create</h1>
 
-<h1>Edit</h1>
+    <h5>Booking</h5>
+    <form method="post">
+        <input type="hidden" name="bookingid" value="@ViewBag.booking.BookingId" />
+        <input type="hidden" name="showid" value="@ViewBag.booking.ShowId" />
+        @{
+            bool[] arr = ViewBag.seatsStatus;
+            for (var n = 0; n < 10; n++)
+            {
+                //int n = 0;
+                for (var m = 0; m < 10; m++)
+                {
+                    int index = n * 10 + m;
+                    @if (arr[index] == true)
+                    {
+                        <input name="@index" type="checkbox" checked onclick="increaseAmount(this)" />
+                    }
+                    else
+                    {
+                        <input name="@index" type="checkbox" onclick="increaseAmount(this)" />
+                    }
 
-<h4>Booking</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="BookingId" />
-            <div class="form-group">
-                <label asp-for="ShowId" class="control-label"></label>
-                <select asp-for="ShowId" class="form-control" asp-items="ViewBag.ShowId"></select>
-                <span asp-validation-for="ShowId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SeatStatus" class="control-label"></label>
-                <input asp-for="SeatStatus" class="form-control" />
-                <span asp-validation-for="SeatStatus" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Amount" class="control-label"></label>
-                <input asp-for="Amount" class="form-control" />
-                <span asp-validation-for="Amount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+                }
+                <br />
+            }
+        }
+        Name <br>
+        <input type="text" name="name" value="@ViewBag.booking.Name" />
+        <br>
+        Amount <br>
+        <input style="background-color: aquamarine" id="amountAuto" type="text" name="amount" value="@ViewBag.booking.Amount" readonly />
+        <br>
+        <button class="btn btn-primary">Save</button>
+    </form>
+    <a href="@Url.Action("Index","Bookings", new { ViewBag.booking.ShowId})">Back to List</a>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    <script>
+
+        const boolArray = [];
+        function increaseAmount(i) {
+            let amountAuto = document.getElementById("amountAuto").value;
+            console.log(i.checked);
+
+            if (i.checked) {
+                amountAuto = parseInt(amountAuto) + 10;
+            } else {
+                if (amountAuto > 0 && boolArray[i.name] == true) {
+                    amountAuto = parseInt(amountAuto) - 10;
+                }
+            }
+            boolArray[i.name] = i.checked;
+
+            //console.log(amountAuto);
+            document.getElementById("amountAuto").setAttribute('value', amountAuto);
+        }
+    </script>
+
+
+
