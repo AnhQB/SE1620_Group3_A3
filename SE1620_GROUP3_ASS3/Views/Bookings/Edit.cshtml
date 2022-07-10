@@ -21,16 +21,16 @@
                 for (var m = 0; m < 10; m++)
                 {
                     int index = n * 10 + m;
-                    if (seatedAllShowId[index] == true)
+                    if (seatedBookingId[index] == true)
                     {
                         locked = true;
-                        <input name="@index+'showid'" type="checkbox" checked onclick="return false;" />
+                        <input name="@index" type="checkbox" checked onclick="increaseAmount(this)" />
                     }
                     else
                     {
-                        if (!locked && seatedBookingId[index] == true)
+                        if (!locked && seatedAllShowId[index] == true)
                         {
-                            <input name="@index" type="checkbox" checked onclick="increaseAmount(this)" />
+                            <input name="@index+showid" type="checkbox" checked onclick="return false;" />
                         }
                         else
                         {
