@@ -12,20 +12,31 @@
         <input type="hidden" name="bookingid" value="@ViewBag.booking.BookingId" />
         <input type="hidden" name="showid" value="@ViewBag.booking.ShowId" />
         @{
-            bool[] arr = ViewBag.seatsStatus;
+            bool[] seatedAllShowId = ViewBag.seatShowId;
+            bool[] seatedBookingId = ViewBag.seatBookingId;
+            bool locked = false;
             for (var n = 0; n < 10; n++)
             {
                 //int n = 0;
                 for (var m = 0; m < 10; m++)
                 {
                     int index = n * 10 + m;
-                    @if (arr[index] == true)
+                    if (seatedAllShowId[index] == true)
                     {
-                        <input name="@index" type="checkbox" checked onclick="increaseAmount(this)" />
+                        locked = true;
+                        <input name="@index+'showid'" type="checkbox" checked onclick="return false;" />
                     }
                     else
                     {
-                        <input name="@index" type="checkbox" onclick="increaseAmount(this)" />
+                        if (!locked && seatedBookingId[index] == true)
+                        {
+                            <input name="@index" type="checkbox" checked onclick="increaseAmount(this)" />
+                        }
+                        else
+                        {
+                            <input name="@index" type="checkbox" onclick="increaseAmount(this)" />
+                        }
+
                     }
 
 

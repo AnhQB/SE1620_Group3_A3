@@ -149,9 +149,10 @@ namespace SE1620_GROUP3_ASS3.Controllers
             {
                 return NotFound();
             }
-
-            bool[] arr = getSeatStatusByBookingID(booking.BookingId);
-            ViewData["seatsStatus"] = arr;
+            bool[] seatedAllShowId = getSeatStatus(booking.ShowId); //
+            bool[] seatedBookingId = getSeatStatusByBookingID(booking.BookingId);
+            ViewData["seatBookingId"] = seatedBookingId;
+            ViewData["seatShowId"] = seatedAllShowId;
             ViewData["booking"] = booking;
             return View();
         }
@@ -185,6 +186,7 @@ namespace SE1620_GROUP3_ASS3.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit()
         {
+            String seatStatus = "";
             string name = Request.Form["name"];
             string amount = Request.Form["amount"];
             int showid = Int32.Parse(Request.Form["showid"]);
@@ -192,7 +194,8 @@ namespace SE1620_GROUP3_ASS3.Controllers
             bool[] arr = new bool[100];
             for (var i = 0; i < 100; i++)
             {
-                if (Request.Form[i + ""].ToString() == null || Request.Form[i + ""].ToString() == "")
+                String index = i.ToString();
+                if (Request.Form[index].ToString() == null || Request.Form[index].ToString() == "")
                 {
                     arr[i] = false;
                 }
@@ -200,18 +203,18 @@ namespace SE1620_GROUP3_ASS3.Controllers
                 {
                     arr[i] = true;
                 }
-
-            }
-            bool[] arrSeated = getSeatStatus(showid);
-            String seatStatus = "";
-            for (var i = 0; i < 100; i++)
-            {
-                if (arrSeated[i] == true)
-                {
-                    arr[i] = false;
-                }
                 seatStatus += Convert.ToInt32(arr[i]);
             }
+            bool[] arrSeated = getSeatStatus(showid);
+            //String seatStatus = "";
+            //for (var i = 0; i < 100; i++)
+            //{
+            //    if (arrSeated[i] == true)
+            //    {
+            //        arr[i] = false;
+            //    }
+            //    seatStatus += Convert.ToInt32(arr[i]);
+            //}
 
             Booking b = new Booking();
             b.BookingId = bookingid;
@@ -219,9 +222,10 @@ namespace SE1620_GROUP3_ASS3.Controllers
             b.Name = name;
             b.SeatStatus = seatStatus;
             b.Amount = Convert.ToDecimal(amount);
-            var booking = (Booking)_context.Bookings.Where(b=>b.BookingId == bookingid);
-            booking = b ;
-            _ = await _context.SaveChangesAsync();
+            var booking = _context.Bookings.Where(b=>b.BookingId == bookingid).FirstOrDefault();
+            booking.SeatStatus = seatStatus;
+            booking.Name = name;
+            _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
